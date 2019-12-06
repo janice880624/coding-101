@@ -4,113 +4,95 @@
       <v-card-title>
         查詢訂單
         <v-spacer></v-spacer>
-        <v-text-field
-          v-model="search"
-          label="Search"
-          single-line
-          hide-details
-        ></v-text-field>
+        <v-text-field v-model="search" label="Search" single-line hide-details></v-text-field>
       </v-card-title>
-      <v-data-table
-        :headers="headers"
-        :items="orders"
-        :search="search"
-      ></v-data-table>
+      <v-data-table :headers="headers" :items="orders" :search="search"></v-data-table>
     </v-card>
 
-    <h1 class="font mt-5">增加訂單</h1>
-    <v-form
-      ref="form"
-      lazy-validation
-    >
-      <v-text-field
-        v-model="customer"
-        label="客戶名稱"
-        :rules="[v => !!v || 'This term is required']"
-      ></v-text-field>
-      <v-select
-        v-model="machine_select"
-        :items="machines"
-        label="選擇機台"
-        :rules="[v => !!v || 'This term is required']"
-      ></v-select>
-
-      <v-menu
-        ref="menu"
-        :close-on-content-click="false"
-        transition="scale-transition"
-        offset-y
-        min-width="300px"
-      >
-        <template v-slot:activator="{ on }">
+    <v-card>
+      <v-card-title>
+        <h1 class="font mt-5">增加訂單</h1>
+      </v-card-title>
+      <v-card-text>
+        <v-form ref="addOrder" lazy-validation>
           <v-text-field
-            v-model="date"
-            label="選擇日期"
-            readonly
-            v-on="on"
-            required
+            v-model="customer"
+            label="客戶名稱"
             :rules="[v => !!v || 'This term is required']"
           ></v-text-field>
-        </template>
-        
-        <v-date-picker
-          ref="picker"
-          v-model="date"
-          :max="new Date().toISOString().substr(0, 10)"
-          min="1950-01-01"
-          @change="save"
-        ></v-date-picker>
-      </v-menu>
+          <v-select
+            v-model="machine_select"
+            :items="machines"
+            label="選擇機台"
+            :rules="[v => !!v || 'This term is required']"
+          ></v-select>
 
-      <v-btn
-        class="mt-3"
-        color="error"
-        @click="resetForm"
-      >
-        重置
-      </v-btn>
+          <v-menu
+            ref="menu"
+            :close-on-content-click="false"
+            transition="scale-transition"
+            offset-y
+            min-width="300px"
+          >
+            <template v-slot:activator="{ on }">
+              <v-text-field
+                v-model="date"
+                label="選擇日期"
+                readonly
+                v-on="on"
+                required
+                :rules="[v => !!v || 'This term is required']"
+              ></v-text-field>
+            </template>
 
-      <v-btn
-        class="mt-3 ml-3"
-        color="primary"
-        @click="setFirebase"
-      >
-        提交
-      </v-btn>
-    </v-form>
+            <v-date-picker
+              ref="picker"
+              v-model="date"
+              :max="new Date().toISOString().substr(0, 10)"
+              min="1950-01-01"
+              @change="save"
+            ></v-date-picker>
+          </v-menu>
+
+          <v-btn class="mt-3" color="error" @click="resetAddOrderForm">重置</v-btn>
+
+          <v-btn class="mt-3 ml-3" color="primary" @click="addOrder">提交</v-btn>
+        </v-form>
+      </v-card-text>
+    </v-card>
   </div>
 </template>
 
 <script>
-import { db } from '@/plugins/db'
+import { db } from "@/plugins/db";
 
 export default {
   data() {
     return {
       orders: [],
       customer: "",
-      machines: ['M01', 'M02', 'M03', 'M04', 'M05'],
+      machines: ["M01", "M02", "M03", "M04", "M05"],
       machine_select: "",
       date: "",
       search: "",
       headers: [
-        { text: '訂單名稱', value: 'name' },
-        { text: '客戶名稱', value: 'customer' },
-        { text: '狀態', value: 'status' },
-        { text: '負責機器', value: 'machine' },
-        { text: '日期', value: 'date' }
+        { text: "訂單名稱", value: "name" },
+        { text: "客戶名稱", value: "customer" },
+        { text: "狀態", value: "status" },
+        { text: "負責機器", value: "machine" },
+        { text: "日期", value: "date" }
       ]
     };
   },
   watch: {
     menu(val) {
-      val && setTimeout(() => (this.$refs.picker.activePicker = 'YEAR'))
-    },
+      val && setTimeout(() => (this.$refs.picker.activePicker = "YEAR"));
+    }
   },
   methods: {
-    setFirebase() {
+    addOrder() {
       // const user = { ...this.user }
-      if (this.$refs.form.validate()) {
+      if (this.$refs.addOrder.validate()) {
         this.snackbar = true;
         const order = {
           customer: this.customer,
@@ -119,15 +101,15 @@ export default {
           status: "未處理"
         };
 
-        order.name = this.$md5(String(Date.now()))
+        order.name = this.$md5(String(Date.now()));
 
-        db.ref('orders/').push(order);
+        db.ref("orders/").push(order);
       }
     },
     save(date) {
-      this.$refs.menu.save(date)
+      this.$refs.menu.save(date);
     },
-    resetForm() {
+    resetAddOrderForm() {
       this.machine_select = "";
       this.customer = "";
       this.date = "";
@@ -136,7 +118,7 @@ export default {
   firebase() {
     return {
       orders: db.ref("/orders")
-    }
+    };
   }
 };
 </script>
