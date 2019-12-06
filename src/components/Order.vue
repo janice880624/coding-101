@@ -1,17 +1,8 @@
 <template>
   <div>
-    <v-card>
+    <v-card class="mt-5">
       <v-card-title>
-        查詢訂單
-        <v-spacer></v-spacer>
-        <v-text-field v-model="search" label="Search" single-line hide-details></v-text-field>
-      </v-card-title>
-      <v-data-table :headers="headers" :items="orders" :search="search"></v-data-table>
-    </v-card>
-
-    <v-card>
-      <v-card-title>
-        <h1 class="font mt-5">增加訂單</h1>
+        <h2>增加訂單</h2>
       </v-card-title>
       <v-card-text>
         <v-form ref="addOrder" lazy-validation>
@@ -74,7 +65,6 @@ export default {
       machines: ["M01", "M02", "M03", "M04", "M05"],
       machine_select: "",
       date: "",
-      search: "",
       headers: [
         { text: "訂單名稱", value: "name" },
         { text: "客戶名稱", value: "customer" },
@@ -95,8 +85,8 @@ export default {
       if (this.$refs.addOrder.validate()) {
         this.snackbar = true;
         const order = {
-          customer: this.customer,
-          machine: this.machine_select,
+          customer: this.addcustomer,
+          machine: this.addmachine_select,
           date: this.date,
           status: "未處理"
         };
@@ -122,4 +112,3 @@ export default {
   }
 };
 </script>
-
