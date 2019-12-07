@@ -40,7 +40,6 @@ import { db } from "@/plugins/db.js";
 export default {
   data() {
     return {
-      dialog: false,
       headers: [
         { text: "訂單編號", value: "orderName" },
         { text: "客戶名稱", value: "customer" },
