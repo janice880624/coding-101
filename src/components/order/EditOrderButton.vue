@@ -117,8 +117,6 @@ export default {
         this.snackbar = true;
 
         db.ref("orders/" + this.orderInfo.id).update(this.orderInfo);
-
-        this.$refs.orderForm.reset();
         this.dialog = false;
       }
     }
