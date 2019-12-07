@@ -1,137 +1,26 @@
 <template>
   <v-app>
-    <v-container>
-      <v-card>
-        <v-card-title>
-          查詢訂單
-          <v-spacer></v-spacer>
-          <v-text-field
-            v-model="search"
-            label="Search"
-            single-line
-            hide-details
-          ></v-text-field>
-        </v-card-title>
-        <v-data-table
-          :headers="headers"
-          :items="orders"
-          :search="search"
-        ></v-data-table>
-      </v-card>
-
-      <h1 class="font mt-5">增加訂單</h1>
-      <v-form
-        ref="form"
-        lazy-validation
-      >
-        <v-text-field
-          v-model="customer"
-          label="客戶名稱"
-          :rules="[v => !!v || 'This term is required']"
-        ></v-text-field>
-        <v-select
-          v-model="machine_select"
-          :items="machines"
-          label="選擇機台"
-          :rules="[v => !!v || 'This term is required']"
-        ></v-select>
-
-        <v-menu
-          ref="menu"
-          :close-on-content-click="false"
-          transition="scale-transition"
-          offset-y
-          min-width="300px"
-        >
-          <template v-slot:activator="{ on }">
-            <v-text-field
-              v-model="date"
-              label="選擇日期"
-              readonly
-              v-on="on"
-              required
-              :rules="[v => !!v || 'This term is required']"
-            ></v-text-field>
-          </template>
-          
-          <v-date-picker
-            ref="picker"
-            v-model="date"
-            :max="new Date().toISOString().substr(0, 10)"
-            min="1950-01-01"
-            @change="save"
-          ></v-date-picker>
-        </v-menu>
-
-        <v-btn
-          class="mt-3"
-          color="primary"
-          @click="SetFirebase"
-        >
-          提交
-        </v-btn>
-      </v-form>
+    <v-container style="max-width: 1000px;">
+      <ShowMachine />
+      <ShowOrder class="mt-5" />
     </v-container>
   </v-app>
 </template>
 
-
 <script>
-import { db } from '@/plugins/db'
+import ShowOrder from "@/components/order/ShowOrder"
+import ShowMachine from "@/components/ShowMachine"
 
 export default {
-  data() {
-    return {
-      orders: [],
-      customer: "",
-      machines: ['M01', 'M02', 'M03', 'M04', 'M05'],
-      machine_select: "",
-      date: "",
-      search: "",
-      headers: [
-        { text: '訂單名稱', value: 'name' },
-        { text: '客戶名稱', value: 'customer' },
-        { text: '狀態', value: 'status' },
-        { text: '負責機器', value: 'machine' },
-        { text: '日期', value: 'date' }
-      ]
-    };
-  },
-  watch: {
-    menu (val) {
-      val && setTimeout(() => (this.$refs.picker.activePicker = 'YEAR'))
-    },
-  },
-  created() {
-    console.log(this.$md5("666"))
-    console.log(this.$md5("66"))
-  },
-  methods: {
-    SetFirebase() {
-      // const user = { ...this.user }
-      if (this.$refs.form.validate()) {
-        this.snackbar = true;
-        const order = {
-          customer: this.customer,
-          machine: this.machine_select,
-          date: this.date,
-          status: "未處理"
-        };
-
-        order.name = this.$md5(String(Date.now()))
-        console.log(order.name)
-        
-        db.ref('orders/').push(order);
-      }
-    },
-    save (date) {
-      this.$refs.menu.save(date)
-    },
-  },
-  firebase() {
-    return {
-      orders: db.ref("/orders")
-    }
+  components: {
+    ShowOrder,
+    ShowMachine
   }
 };
 </script>
+
+<style>
+* {
+  font-family: '微軟正黑體'!important;
+}
+</style>
