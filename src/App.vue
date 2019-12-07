@@ -1,17 +1,17 @@
 <template>
   <v-app>
-    <v-container style="max-width: 800px;">
-      <Order/>
+    <v-container style="max-width: 1000px;">
+      <ShowOrder/>
     </v-container>
   </v-app>
 </template>
 
 <script>
-import Order from "@/components/Order"
+import ShowOrder from "@/components/order/ShowOrder"
 
 export default {
   components: {
-    Order
+    ShowOrder,
   }
 };
 </script>
