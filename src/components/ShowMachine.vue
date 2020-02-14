@@ -8,7 +8,11 @@
       :items="machines"
       :search="search"
       class="elevation-1"
-    ></v-data-table>
+    >
+      <template v-slot:item.status="{ item }">
+        <v-chip :color="getColor(item.status)" dark>{{ item.status }}</v-chip>
+      </template>
+    </v-data-table>
   </v-card>
 </template>
 
@@ -25,6 +29,12 @@ export default {
       ],
       machines: []
     };
+  },
+  methods: {
+    getColor (status) {
+        if (status == "online") return "green"
+        else if (status == "offline") return "red"
+    }
   },
   firebase() {
     return {
