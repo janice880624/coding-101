@@ -10,7 +10,7 @@ Vue.use(rtdbPlugin)
 const firebaseConfig = {
   apiKey: "AIzaSyCVAnHG8gArEKg6Fsha1lOzDOEak5hX2s0",
   authDomain: "coding101-a8967.firebaseapp.com",
-  databaseURL: "https://coding101-a8967.firebaseio.com",
+  databaseURL: "https://coding101-2c8e8.firebaseio.com",
   projectId: "coding101-a8967",
   storageBucket: "coding101-a8967.appspot.com",
   messagingSenderId: "107632168451",
