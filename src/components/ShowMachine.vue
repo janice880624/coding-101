@@ -27,7 +27,8 @@ export default {
         { text: "機台狀態", value: "status" },
         { text: "處理訂單", value: "orderHanding"}
       ],
-      machines: []
+      machines: [],
+      search: ""
     };
   },
   methods: {
