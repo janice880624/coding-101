@@ -19,12 +19,12 @@ export default {
         {
           name: "PM 2.5",
           queryName: "g3_25",
-          path: require("@/assets/icons/balance-scale-left-solid.svg")
+          path: require("@/assets/icons/industry.svg")
         },
         {
           name: "PM 10",
           queryName: "g3_10",
-          path: require("@/assets/icons/balance-scale-right-solid.svg")
+          path: require("@/assets/icons/industry.svg")
         },
         {
           name: "濕度",
